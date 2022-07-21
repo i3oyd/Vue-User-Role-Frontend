@@ -4,7 +4,7 @@
 		data(){
 			return{
 				logged: localStorage.getItem('logged'),
-				user: localStorage.getItem('user')
+				user: JSON.parse(localStorage.getItem('user'))
 			}
 		},
 	}
