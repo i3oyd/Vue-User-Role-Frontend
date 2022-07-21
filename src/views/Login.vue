@@ -31,11 +31,8 @@ import axios from 'axios'
             
             localStorage.setItem('logged','true')
             localStorage.setItem('token',res.data.token)
-            localStorage.setItem('user',res.data.user)
-            //localStorage.setItem('role',res.data.role)
-            console.log(res.data)
+            localStorage.setItem('user',JSON.stringify(res.data.user))
             return this.$router.push('users')
-            // console.log('Success: '+res.data.token)
         })
         .catch(err => {
             console.log(err)
