@@ -87,9 +87,9 @@ export default {
             axios.get("http://localhost:8000/sanctum/csrf-cookie").then(response => {
                 axios.post(APISettings.baseURL + "register", this.formData)
                     .then(res => {
-                    console.log("Success: " + res.data)
-                    localStorage.setItem("token", res.data.token)
                     localStorage.setItem('logged','true')
+                    localStorage.setItem('token',res.data.token)
+                    localStorage.setItem('user',JSON.stringify(res.data.user))
                     this.$router.push("/")
                 })
                     .catch(err => {
