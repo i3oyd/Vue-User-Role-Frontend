@@ -1,7 +1,7 @@
 <template>
 
 <MainNav></MainNav>
-<p class="w-11/12 flex flex-row-reverse mb-2"><router-link to="users/create" class="bg-green-500 rounded-md text-white p-2 flex-end">Add New User</router-link></p>
+<p class="w-11/12 flex flex-row-reverse mb-2 pt-2"><router-link to="users/create" class="bg-green-500 rounded-md text-white p-2 flex-end">Add New User</router-link></p>
 <table class="w-11/12 text-sm text-left text-gray-500 dark:text-gray-400 mx-auto">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
