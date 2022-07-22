@@ -13,9 +13,16 @@
             </svg>
         </div>
         <h3 class="text-2xl font-bold text-center">Join us</h3>
+       
         <form action="/" id="regForm">
+            <div>
+                <p class="text-red-500 text-sm pb-2" v-if="errorMessage">{{ errorMessage }}</p>
+            </div>
             <div class="mt-4">
                 <div>
+                    <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.name">{{ errors.name[0] }}</p>
+                    </div>
                     <label class="block" for="Name">Name</label>
                             <input type="text" placeholder="Name"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -24,6 +31,9 @@
                                 >
                 </div>
                 <div class="mt-4">
+                    <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.email">{{ errors.email[0] }}</p>
+                    </div>
                     <label class="block" for="email">Email</label>
                             <input type="text" placeholder="Email"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -32,6 +42,9 @@
                                 >
                 </div>
                 <div class="mt-4">
+                    <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.password">{{ errors.password[0] }}</p>
+                    </div>
                     <label class="block">Password</label>
                             <input type="password" placeholder="Password"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -47,7 +60,6 @@
                                 v-model="formData.password_confirmation"
                                 >
                 </div>
-                <span class="text-xs text-red-400">Password must be same!</span>
                 <div class="flex">
                     <button type="button" class="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900" @click="registerUser()">Create
                         Account</button>
@@ -66,7 +78,6 @@
 
 <script lang="ts">
 import { APISettings } from "@/api.config"
-import router from "@/router"
 import axios from "axios"
 import MainNav from "../components/MainNav.vue"
 export default {
@@ -77,8 +88,10 @@ export default {
                 "name": "",
                 "email": "",
                 "password": "",
-                "password_confirmation": ""
-            }
+                "password_confirmation": "",
+            },
+            errors: [],
+            errorMessage: ''
         };
     },
     methods: {
@@ -93,12 +106,12 @@ export default {
                     this.$router.push("/")
                 })
                     .catch(err => {
-                    console.log(err);
+                    this.errors = err.response.data.errors
+                    this.errorMessage = err.response.data.message
                 });
             });
         }
-    },
-    components: { MainNav }
+    }
 }
 
 
