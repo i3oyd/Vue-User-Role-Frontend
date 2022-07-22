@@ -2,9 +2,16 @@
 <div class="w-full flex items-center justify-center min-h-screen bg-gray-100">
     <div class="px-8 py-2 mx-4 mt-4 text-left bg-white shadow-lg md:w-2/3 lg:w-2/3 sm:w-4/5 w-11/12">
         <h3 class="text-2xl font-bold text-center">Create New User</h3>
+        <div>
+            <p class="text-green-600 text-sm pb-2" v-if="successMessage">{{ successMessage }}</p>
+            <p class="text-red-500 text-sm pb-2" v-if="errorMessage">{{ errorMessage }}</p>
+        </div>
         <form action="/" id="newUserForm">
             <div class="mt-4">
                 <div>
+                    <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.name">{{ errors.name[0] }}</p>
+                    </div>
                     <label class="block" for="Name">Name</label>
                             <input type="text" placeholder="Name"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -13,6 +20,9 @@
                                 >
                 </div>
                 <div class="mt-4">
+                     <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.email">{{ errors.email[0] }}</p>
+                    </div>
                     <label class="block" for="email">Email</label>
                             <input type="text" placeholder="Email"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -21,6 +31,9 @@
                                 >
                 </div>
                 <div class="mt-4">
+                    <div v-if="errors">
+                        <p class="text-red-500 text-sm" v-if="errors.password">{{ errors.password[0] }}</p>
+                    </div>
                     <label class="block">Password</label>
                             <input type="password" placeholder="Password"
                                 class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
@@ -70,7 +83,10 @@ export default {
                 'password_confirmation': '',
                 'role_id': ''
             },
-            roles: []
+            roles: [],
+            errors: [],
+            errorMessage: '',
+            successMessage: ''
         }
     },
     created(){
@@ -84,11 +100,12 @@ export default {
                     }
                 })
                 .then(res =>  {
-                    console.log(res.data)
-                    this.$route.push('/users/create')
+                    this.successMessage = res.data.message
+                    this.$router.push('/users/create')
                 })
                 .catch(err => {
-                    console.log(err.message,err)
+                    this.errors = err.response.data.errors
+                    this.errorMessage = err.response.data.message
                 })
         },
         fetchRoles(){
