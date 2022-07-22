@@ -12,7 +12,10 @@ import axios from 'axios'
           password: '',
           logged: localStorage.getItem('logged')
         },
-        user: {}
+        user: {},
+        errors: [],
+        errorMessage: ''
+        
       }
     },
     beforeCreate(){
@@ -36,6 +39,8 @@ import axios from 'axios'
         })
         .catch(err => {
             console.log(err)
+            this.errors = err.response.data.errors
+            this.errorMessage = err.response.data.message
         })
         
       })
@@ -63,7 +68,13 @@ import axios from 'axios'
       </div>
       <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
         <form id="loginForm" @submit.prevent="onSubmit">
+          <div v-if="!errors">
+                <p class="text-red-500 text-sm pb-2" v-if="errorMessage">{{ errorMessage }}</p>
+          </div>
           <!-- Email input -->
+          <div v-if="errors">
+              <p class="text-red-500 text-sm" v-if="errors.email">{{ errors.email[0] }}</p>
+          </div>
           <div class="mb-6">
             <input
               type="email"
@@ -76,6 +87,9 @@ import axios from 'axios'
           </div>
 
           <!-- Password input -->
+          <div v-if="errors">
+            <p class="text-red-500 text-sm" v-if="errors.password">{{ errors.password[0] }}</p>
+          </div>
           <div class="mb-6">
             <input
               type="password"
