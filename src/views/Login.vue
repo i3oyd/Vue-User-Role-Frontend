@@ -9,9 +9,9 @@ import axios from 'axios'
       return{
         formData: {
           email: '',
-          password: '',
-          logged: localStorage.getItem('logged')
+          password: ''
         },
+        logged: localStorage.getItem('logged'),
         user: {},
         errors: [],
         errorMessage: ''
